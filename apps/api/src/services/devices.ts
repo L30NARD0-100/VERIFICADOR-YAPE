@@ -8,7 +8,7 @@ import { uuid } from '../schemas/contracts.js'
 import type { deviceCreate, deviceRegister, heartbeat, notification } from '../schemas/contracts.js'
 
 type Actor = { profile: string; company: string }
-type Device = { id: string; company_id: string; branch_id: string; status: 'pending' | 'active' | 'revoked' }
+type Device = { id: string; company_id: string; branch_id: string; name: string; status: 'pending' | 'active' | 'revoked' }
 type Credential = { id: string; hash: Buffer }
 const management = ['COMPANY_ADMIN', 'MANAGER'] as const
 const digest = (value: string) => createHash('sha256').update(value).digest()
@@ -108,8 +108,10 @@ export async function registerDevice(pool: Pool, input: z.infer<typeof deviceReg
       where id = $1`, [device.id, input.app_version])
     await audit(db, { company: device.company_id, actor: device.id, actorType: 'device',
       action: 'device.paired', entity: 'device', id: device.id })
+    const company = await one<{ name: string }>(db, 'select name from public.companies where id = $1', [device.company_id])
     return {
       device_id: device.id, company_id: device.company_id, branch_id: device.branch_id,
+      device_name: device.name, company_name: company?.name,
       device_token: device.id + '.' + secret,
     }
   })

@@ -120,6 +120,8 @@ test('API de negocio con PostgreSQL y RLS', async (t) => {
   const pair = await issue()
   await request('POST', '/devices/register', 401, undefined, { pairing_code: old.pairing_code })
   const link = await data('POST', '/devices/register', 201, undefined, { pairing_code: pair.pairing_code, app_version: '1.0' })
+  assert.equal(link.device_name, 'Android')
+  assert.equal(link.company_name, 'Empresa revisada')
   await request('POST', '/devices/register', 401, undefined, { pairing_code: pair.pairing_code })
   await request('POST', scope + '/devices/' + device.id + '/pairing', 409, 'admin')
   assert.equal((await data('POST', '/devices/heartbeat', 200, link.device_token, { app_version: '1.1' })).app_version, '1.1')

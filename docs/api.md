@@ -19,7 +19,7 @@ La API usa JSON UTF-8, excepto la exportación CSV. En producción, Render termi
 | `GET /api/companies/:companyId/devices` · `GET /api/companies/:companyId/devices/:id` | Usuario. Dispositivos visibles según RLS. |
 | `POST /api/companies/:companyId/devices` | Administrador o gerente dentro de su alcance. Campos `name`, `branch_id` y `device_identifier`. |
 | `POST /api/companies/:companyId/devices/:id/pairing` · `POST /api/companies/:companyId/devices/:id/revoke` | Administrador o gerente dentro de su alcance. Emite un código temporal o revoca la credencial actual. |
-| `POST /api/devices/register` | Código de vinculación. Campos `pairing_code` y `app_version` opcional. Devuelve `device_id`, `company_id`, `branch_id` y `device_token` una sola vez. |
+| `POST /api/devices/register` | Código de vinculación. Campos `pairing_code` y `app_version` opcional. Devuelve `device_id`, `company_id`, `branch_id`, `device_name`, `company_name` y `device_token` una sola vez. |
 | `POST /api/devices/heartbeat` · `POST /api/devices/unlink` | Dispositivo. Heartbeat acepta `{}` o `app_version`. La desvinculación devuelve `204`. |
 | `POST /api/payments/notifications` | Dispositivo. Registra una notificación de forma idempotente. |
 | `GET /api/companies/:companyId/payments` · `GET /api/companies/:companyId/payments/:id` · `GET /api/companies/:companyId/payment-events` | Usuario. Historial, detalle y eventos en su empresa y sucursales autorizadas. |

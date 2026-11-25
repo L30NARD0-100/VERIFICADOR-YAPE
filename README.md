@@ -39,10 +39,10 @@ La API usa `PORT` y escucha en `0.0.0.0`. Para Android:
 
 ```sh
 cd apps/android
-./gradlew assembleDebug lintDebug testDebugUnitTest
+./gradlew testDebugUnitTest lintDebug assembleDebug
 ```
 
-En Windows usa `gradlew.bat`. Configura el SDK mediante Android Studio o `ANDROID_HOME`. El APK de depuración se genera en `apps/android/app/build/outputs/apk/debug/app-debug.apk`. Abre `apps/android` en Android Studio para ejecutar la pantalla inicial en un dispositivo o emulador API 26 o superior.
+En Windows usa `gradlew.bat`. Configura el SDK mediante Android Studio o `ANDROID_HOME`. El APK de depuración se genera en `apps/android/app/build/outputs/apk/debug/app-debug.apk`. Abre `apps/android` en Android Studio para ejecutar el agente en un dispositivo API 26 o superior. Configura la URL HTTPS del backend para vincular el equipo y consulta la [guía de Android](docs/android.md).
 
 ## Base de datos local
 
