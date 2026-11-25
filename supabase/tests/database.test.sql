@@ -92,8 +92,9 @@ select is(
 select ok((select pubinsert and pubupdate and not pubdelete and not pubtruncate
   from pg_publication where pubname = 'supabase_realtime'),
   'Realtime publica altas y cambios');
-select is((select count(*) from pg_class as relation join pg_namespace as ns on ns.oid = relation.relnamespace
-  where ns.nspname = 'app_private' and relation.relkind = 'r' and relation.relrowsecurity), 4::bigint,
+select ok((select bool_and(relation.relrowsecurity)
+  from pg_class as relation join pg_namespace as ns on ns.oid = relation.relnamespace
+  where ns.nspname = 'app_private' and relation.relkind = 'r'),
   'Todas las tablas privadas tienen RLS');
 
 set local role anon;

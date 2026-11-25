@@ -46,3 +46,9 @@ supabase test db
 ```
 
 `supabase db reset` reconstruye la base local. La suite pgTAP crea y revierte sus datos de prueba en una transacción. Simula sesiones con el rol PostgreSQL y los claims de Auth y valida permisos por matriz de roles, revocación, restricciones, índices, unicidad, auditoría y publicación.
+
+## Soporte para la API
+
+La etapa 4 agrega un índice de búsqueda por correo para asociar identidades de Auth y `app_private.api_rate_limits` para contar solicitudes por ventana de un minuto. La tabla de límites aplica RLS y permanece fuera de la API de datos y Realtime.
+
+Hono consulta Auth con el cliente de Supabase y abre transacciones directas en PostgreSQL para las operaciones que requieren atomicidad. Las lecturas de usuarios se ejecutan con `SET LOCAL ROLE authenticated` y el identificador de la sesión validada. La vinculación, la revocación y la ingesta coordinan sus escrituras con bloqueos de filas. La transacción de ingesta guarda el evento, su huella, el pago pendiente cuando corresponde y la auditoría.

@@ -23,7 +23,7 @@ npm run dev:web
 
 Abre la dirección que imprime Vite. Prueba el servidor con `curl -fsS http://localhost:3000/api/health`; la respuesta esperada es `{"status":"ok"}`.
 
-Las bases web y API arrancan sin Supabase. Para personalizar el puerto, copia `.env.example` a `.env` y ajusta `PORT`. Guarda las credenciales futuras únicamente en los entornos correspondientes.
+El esqueleto web y la ruta de salud arrancan sin Supabase. Para usar la API de negocio, inicia Supabase local, carga las migraciones, copia `.env.example` a `.env` y configura sus variables de servidor con los valores de tu proyecto. Ajusta `PORT` si lo necesitas. Guarda las credenciales privadas en el entorno del backend.
 
 ## Compilación y pruebas
 
@@ -54,7 +54,17 @@ supabase db reset
 supabase test db
 ```
 
-El reinicio reconstruye la base local. La web y la API de configuración inicial siguen arrancando sin ella. Consulta [Base de datos](docs/database.md) para el alcance de las pruebas.
+El reinicio reconstruye la base local. La API de negocio requiere la base migrada. Consulta [Base de datos](docs/database.md) para el alcance de las pruebas.
+
+## API de negocio
+
+La etapa 4 implementa autenticación, empresas, sucursales, usuarios, dispositivos, ingesta idempotente, reportes y auditoría. Con una base local de pruebas ya migrada, ejecuta:
+
+```sh
+TEST_DATABASE_URL='<conexión a la base local de pruebas>' npm run test:api:integration
+```
+
+Usa una base descartable para la suite. Para configurar el primer administrador y consultar los contratos HTTP, revisa [API](docs/api.md) y [Despliegue](docs/deployment.md).
 
 ## Documentación
 
