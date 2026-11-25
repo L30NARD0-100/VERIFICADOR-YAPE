@@ -1,0 +1,18 @@
+# Arquitectura
+
+La arquitectura aprobada utiliza React con Vite en Render Static Site, Node.js con Hono en Render Web Service, Supabase PostgreSQL, Auth y Realtime, y Kotlin con Compose en Android.
+
+```mermaid
+flowchart LR
+    Android -->|HTTPS| Hono["API Hono · Render"]
+    Web["Web React · Render"] -->|HTTPS| Hono
+    Web <-->|Sesión| Auth["Supabase Auth"]
+    Hono --> Auth
+    Hono --> Postgres["Supabase PostgreSQL · RLS"]
+    Postgres --> Realtime["Supabase Realtime"]
+    Realtime --> Web
+```
+
+El diagrama describe el sistema objetivo. La etapa 2 entrega los puntos de arranque de web, API y Android. npm workspaces integra `apps/web`, `apps/api` y `packages/shared`. Android se construye desde `apps/android`.
+
+Etapas posteriores incorporan la base de datos y RLS, la API de negocio, el panel y sus componentes shadcn/ui, el agente de captura, la integración, el despliegue y la preparación comercial. Las notificaciones detectadas y los pagos verificados se representarán mediante estados separados.

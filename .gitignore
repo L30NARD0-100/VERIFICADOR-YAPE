@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.gradle/
+.kotlin/
+build/
+local.properties
+.idea/
+*.iml
+*.jks
+*.keystore
+supabase/.temp/
