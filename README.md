@@ -4,7 +4,7 @@ Monorepo para monitorear avisos de pagos detectados en dispositivos Android auto
 
 ## Estado del proyecto
 
-El repositorio incluye un frontend React/Vite/Tailwind, una API Hono con una ruta de salud y un proyecto Kotlin/Compose independiente. Node.js gestiona los paquetes JavaScript con npm workspaces. Android usa su Gradle Wrapper.
+El repositorio incluye un panel React/Vite/Tailwind, una API Hono con autenticación e ingesta idempotente, las migraciones de Supabase y un proyecto Kotlin/Compose independiente. Node.js gestiona los paquetes JavaScript con npm workspaces. Android usa su Gradle Wrapper.
 
 ## Requisitos
 
@@ -23,7 +23,7 @@ npm run dev:web
 
 Abre la dirección que imprime Vite. Prueba el servidor con `curl -fsS http://localhost:3000/api/health`; la respuesta esperada es `{"status":"ok"}`.
 
-El esqueleto web y la ruta de salud arrancan sin Supabase. Para usar la API de negocio, inicia Supabase local, carga las migraciones, copia `.env.example` a `.env` y configura sus variables de servidor con los valores de tu proyecto. Ajusta `PORT` si lo necesitas. Guarda las credenciales privadas en el entorno del backend.
+La pantalla de acceso y la ruta de salud arrancan sin Supabase. Para usar la API de negocio, inicia Supabase local, carga las migraciones, copia `.env.example` a `.env` y configura sus variables de servidor con los valores de tu proyecto. Ajusta `PORT` si lo necesitas. Guarda las credenciales privadas en el entorno del backend.
 
 ## Compilación y pruebas
 
@@ -66,10 +66,15 @@ TEST_DATABASE_URL='<conexión a la base local de pruebas>' npm run test:api:inte
 
 Usa una base descartable para la suite. Para configurar el primer administrador y consultar los contratos HTTP, revisa [API](docs/api.md) y [Despliegue](docs/deployment.md).
 
+## Panel web
+
+Con Supabase y la API en ejecución, configura las variables públicas `VITE_*` y ejecuta `npm run dev:web`. El panel incluye historial, reportes, administración y recuperación de cambios por Realtime. Ejecuta `npm run test:web` para verificar los flujos de la etapa 5.
+
 ## Documentación
 
 - [Arquitectura y alcance](docs/architecture.md)
 - [Base de datos](docs/database.md)
 - [API](docs/api.md)
+- [Panel web](docs/web.md)
 - [Android](docs/android.md)
 - [Despliegue](docs/deployment.md)

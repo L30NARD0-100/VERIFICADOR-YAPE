@@ -168,8 +168,12 @@ test('API de negocio con PostgreSQL y RLS', async (t) => {
   assert.deepEqual(totals.events_by_status, { processed: '1', needs_review: '1' })
   assert.equal(totals.totals_by_currency[0].detected_amount, '15.50')
   assert.equal(totals.totals_by_currency[0].officially_verified_amount, '0')
+  assert.equal(totals.devices_online_count, '1')
+  assert.equal(totals.devices_active_count, '1')
+  assert.equal(totals.all_time_notifications_count, '3')
   const empty = await data('GET', scope + '/reports/summary?from=2026-11-25&to=2026-11-26', 200, 'manager')
   assert.deepEqual(empty.totals_by_currency, [])
+  assert.equal(empty.devices_online_count, '0')
   const exportPath = scope + '/reports/export.csv?from=2026-11-25&to=2026-11-25'
   await request('GET', exportPath, 403, 'cashier')
   const csv = await request('GET', exportPath, 200, 'admin')

@@ -131,7 +131,7 @@ export function companyRoutes(router: Router, { auth, pool }: Dependencies) {
   router.get('/companies/:companyId/reports/daily', async (context) => {
     const { date = todayInLima(), ...filters } = query(context, dailyFilters)
     return context.json(await companyRead(context, (db, company) =>
-      summarize(db, company, { ...filters, from: date, to: date })))
+      summarize(db, company, { ...filters, from: date, to: date, includeAllTime: true })))
   })
   router.get('/companies/:companyId/reports/summary', async (context) => {
     const filters = query(context, summaryFilters)

@@ -17,3 +17,7 @@ Usa un proyecto Supabase dedicado. Las migraciones versionadas esperan PostgreSQ
 La API de la etapa 4 requiere `DATABASE_URL` además de la URL y las claves de Supabase. En Render configura una conexión PostgreSQL con TLS y validación de certificado. La conexión del backend necesita acceso al esquema privado, a las tablas de negocio y la capacidad de asumir el rol `authenticated`. En desarrollo, la conexión de administración provista por Supabase CLI cumple estos requisitos. Mantén `DATABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` exclusivamente en el servidor. En producción, `FRONTEND_URL` y `SUPABASE_URL` requieren HTTPS.
 
 Para el primer alta empresarial local, crea las identidades del administrador global y del administrador inicial en Supabase Auth. Registra el UUID del administrador global en `app_private.platform_admins` desde una conexión administrativa y usa su sesión para llamar `POST /api/companies` con el UUID del administrador inicial. Define la configuración de correo del proyecto antes de enviar invitaciones.
+
+## Rutas y recuperación del panel web
+
+En Render Static Site, configura una regla **Rewrite** de `/*` a `/index.html` para que las rutas internas abran directamente. Usa la URL pública de Hono, sin `/api`, en `VITE_API_BASE_URL`; el origen público de la web debe coincidir con `FRONTEND_URL` en la API. En Supabase Auth, configura la URL pública de la web como **Site URL** y autoriza la misma URL con la ruta `/restablecer` para los enlaces de recuperación. El proyecto local ya autoriza `http://localhost:5173/restablecer`.

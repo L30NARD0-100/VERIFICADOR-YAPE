@@ -62,11 +62,21 @@ export function listEvents(db: PoolClient, company: string, options: z.infer<typ
   })
 }
 
-export async function summarize(db: PoolClient, company: string, options: Filters & { from: string; to: string }) {
+export async function summarize(db: PoolClient, company: string, options: Filters & { from: string; to: string; includeAllTime?: boolean }) {
   const events = activityScope(company, options, 'e', 'e.captured_at')
   const payments = activityScope(company, options, 'p', 'p.received_at', events.values)
+  const devices = new Where(events.values)
+  devices.equals('d.company_id', company)
+  devices.equals('d.branch_id', options.branch_id)
+  devices.equals('d.id', options.device_id)
+  const allTime = options.includeAllTime
+    ? activityScope(company, { branch_id: options.branch_id, device_id: options.device_id },
+      'e', 'e.captured_at', events.values)
+    : undefined
   const result = await one(db, `
     select
+      fleet.devices_active_count, fleet.devices_online_count,
+      ${allTime ? `(select count(*)::text from public.payment_events e ${allTime.sql()}) as all_time_notifications_count,` : ''}
       (select coalesce(jsonb_object_agg(status, total), '{}'::jsonb)
         from (select e.processing_status as status, count(*)::text as total
           from public.payment_events e ${events.sql()} group by e.processing_status) as statuses
@@ -80,6 +90,12 @@ export async function summarize(db: PoolClient, company: string, options: Filter
           from public.payments p ${payments.sql()}
           group by p.currency) as totals
       ) as totals_by_currency
+    from (
+      select count(*) filter (where d.status = 'active')::text as devices_active_count,
+        count(*) filter (where d.status = 'active'
+          and d.last_seen_at >= now() - interval '5 minutes')::text as devices_online_count
+      from public.devices d ${devices.sql()}
+    ) as fleet
   `, events.values)
   return { from: options.from, to: options.to, timezone: 'America/Lima', ...result }
 }
