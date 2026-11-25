@@ -2,7 +2,7 @@
 
 Monorepo para monitorear avisos de pagos detectados en dispositivos Android autorizados. La verificación oficial de un pago requiere evidencia de una fuente autorizada.
 
-## Etapa 2 · configuración inicial
+## Estado del proyecto
 
 El repositorio incluye un frontend React/Vite/Tailwind, una API Hono con una ruta de salud y un proyecto Kotlin/Compose independiente. Node.js gestiona los paquetes JavaScript con npm workspaces. Android usa su Gradle Wrapper.
 
@@ -43,6 +43,18 @@ cd apps/android
 ```
 
 En Windows usa `gradlew.bat`. Configura el SDK mediante Android Studio o `ANDROID_HOME`. El APK de depuración se genera en `apps/android/app/build/outputs/apk/debug/app-debug.apk`. Abre `apps/android` en Android Studio para ejecutar la pantalla inicial en un dispositivo o emulador API 26 o superior.
+
+## Base de datos local
+
+La etapa 3 incorpora las migraciones, las políticas RLS, el enlace de perfiles con Auth y la publicación para Realtime. Requiere Supabase CLI y Docker:
+
+```sh
+supabase start
+supabase db reset
+supabase test db
+```
+
+El reinicio reconstruye la base local. La web y la API de configuración inicial siguen arrancando sin ella. Consulta [Base de datos](docs/database.md) para el alcance de las pruebas.
 
 ## Documentación
 

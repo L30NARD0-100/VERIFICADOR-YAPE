@@ -1,0 +1,2 @@
+-- El catálogo base se carga con las migraciones.
+-- Los datos ficticios para pruebas se crean y revierten dentro de cada suite.

@@ -15,4 +15,6 @@ flowchart LR
 
 El diagrama describe el sistema objetivo. La etapa 2 entrega los puntos de arranque de web, API y Android. npm workspaces integra `apps/web`, `apps/api` y `packages/shared`. Android se construye desde `apps/android`.
 
-Etapas posteriores incorporan la base de datos y RLS, la API de negocio, el panel y sus componentes shadcn/ui, el agente de captura, la integración, el despliegue y la preparación comercial. Las notificaciones detectadas y los pagos verificados se representarán mediante estados separados.
+Etapas posteriores incorporan la API de negocio, el panel y sus componentes shadcn/ui, el agente de captura, la integración, el despliegue y la preparación comercial. Las notificaciones detectadas y los pagos verificados se representarán mediante estados separados.
+
+La etapa 3 incorpora el esquema relacional y sus políticas. PostgreSQL delimita las lecturas por empresa y sucursal. Las credenciales de dispositivo y los datos de diagnóstico residen en el esquema privado. Las altas y los cambios de pagos y eventos se publican mediante Realtime. Véase [Base de datos](database.md).
